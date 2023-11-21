@@ -4,19 +4,6 @@ export const login = (loginForm) => {
     return axios.post('/adminapi/user/login', loginForm)
 }
 
-// 更新formData信息
-export const upload = (path, userForm) => {
-    const params = new FormData()
-    for (let i in userForm) {
-        params.append(i, userForm[i])
-    }
-    return axios.post(
-        path,
-        params,
-        { headers: { 'Content-Type': 'multipart/form-Data' } }
-    )
-}
-
 // 获取用户列表信息
 export const getUserList = () => {
     return axios.get('/adminapi/user/list')

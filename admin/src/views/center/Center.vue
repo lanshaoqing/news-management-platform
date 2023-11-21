@@ -61,7 +61,8 @@
 import { useStore } from 'vuex'
 import { computed, reactive, ref, onMounted } from 'vue';
 
-import { upload, getUserInfo } from '@/api/user'
+import { getUserInfo } from '@/api/users'
+import { upload } from '@/api/upload'
 import { ElMessage } from 'element-plus';
 import Upload from '@/components/upload/Upload'
 const store = useStore()
@@ -100,6 +101,7 @@ onMounted(async () => {
     userForm.username =  username
     userForm.gender =  gender
     userForm.introduction =  introduction
+    ElMessage.success('获取成功')
 })
 const handleChange = (file) => {
     userForm.avatar = URL.createObjectURL(file)

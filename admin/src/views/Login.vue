@@ -24,7 +24,7 @@
 import { loadFull } from "tsparticles";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { login } from '@/api/user'
+import { login } from '@/api/users'
 import { ElMessage } from "element-plus";
 import { useStore } from "vuex";
 const store = useStore()

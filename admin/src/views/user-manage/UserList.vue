@@ -83,7 +83,7 @@
 
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
-import { getUserList, deleteUser, editUser } from '@/api/user'
+import { getUserList, deleteUser, editUser } from '@/api/users'
 import { ElMessage } from 'element-plus';
 const dialogVisible = ref(false)
 const tableData = ref([])
@@ -117,6 +117,7 @@ const getTableData = async () => {
     const result = await getUserList()
     if (result.data.code === 1) {
         tableData.value = result.data.data
+        ElMessage.success('获取成功')
     }
 }
 

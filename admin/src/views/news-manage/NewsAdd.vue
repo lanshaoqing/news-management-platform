@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-page-header title="企业门户管理系统" icon="null">
+        <el-page-header title="新闻管理" icon="null">
             <template #content>
                 <span class="text-large font-600 mr-3"> 创建新闻 </span>
             </template>
@@ -39,8 +39,9 @@
 import { ref, reactive } from 'vue'
 import Upload from '@/components/upload/Upload'
 import editor from '@/components/editor/Editor'
-import { upload } from '@/api/user'
+import { upload } from '@/api/upload'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 const router = useRouter()
 const newsFormRef = ref()
 const newsForm = reactive({
@@ -76,8 +77,8 @@ const handleUploadChange = (file) => {
 const submitForm = () => {
     newsFormRef.value.validate(async (valid) => {
         if (valid) {
-            const result = await upload('adminapi/news/add', newsForm)
-            router.push('/news-manage/newslist')
+            await upload('adminapi/news/add', newsForm)
+            ElMessage.success('创建成功')
         }
     })
 }

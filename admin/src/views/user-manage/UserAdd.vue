@@ -43,7 +43,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import Upload from '@/components/upload/Upload'
-import { upload } from '@/api/user'
+import { upload } from '@/api/users'
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 const userFormRef = ref()
@@ -90,7 +90,6 @@ const submitForm = () => {
             if (result.data.code === 1) {
                 // store.commit('changeUserInfo', result.data.data)
                 ElMessage.success('添加成功')
-                router.push('/user-manage/userlist')
             }
         }
     })
