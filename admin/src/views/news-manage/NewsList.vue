@@ -104,7 +104,7 @@ const handlePreview = (data) => {
     dialogVisible.value = true
 }
 const handleEdit = (data) => {
-    router.push(`/news-manage/editnews/${data.id}`)
+    router.push(`/news-manage/editnew/${data.id}`)
 }
 
 const handleDelete = async (item) => {

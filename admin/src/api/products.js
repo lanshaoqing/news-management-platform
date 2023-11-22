@@ -9,3 +9,8 @@ export const getProductsList = () => {
 export const deleteProducts = (data) => {
     return axios.delete(`adminapi/products/list/${data.id}`)
 }
+
+// 获取产品信息
+export const getProductInfo = (data) => {
+    return axios.get(`/adminapi/products/info/${data.id}`)
+}

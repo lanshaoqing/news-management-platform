@@ -58,7 +58,7 @@ const getTableData = async () => {
 }
 
 const handleEdit = (data) => {
-    // router.push(`/news-manage/editnews/${data.id}`)
+    router.push(`/product-manage/editproduct/${data.id}`)
 }
 
 const handleDelete = async (item) => {

@@ -4,11 +4,15 @@ const upload = multer({ dest: 'public/productsuploads/' })
 const router = express.Router()
 const router_handler = require('../../router_handler/admin/products')
 
-router.post('/adminapi/products/add',upload.single('file'),router_handler.add)
+router.post('/adminapi/products/add', upload.single('file'), router_handler.add)
 
-router.get('/adminapi/products/list',router_handler.list)
+router.get('/adminapi/products/list', router_handler.list)
 
-router.delete('/adminapi/products/list/:id',router_handler.delete)
+router.post('/adminapi/products/list', upload.single('file'), router_handler.update)
+
+router.get('/adminapi/products/info/:id', router_handler.info)
+
+router.delete('/adminapi/products/list/:id', router_handler.delete)
 
 
 

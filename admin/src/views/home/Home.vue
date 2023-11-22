@@ -23,9 +23,15 @@
                     <span>公司产品</span>
                 </div>
             </template>
-            <el-carousel :interval="4000" type="card" height="200px">
-                <el-carousel-item v-for="item in 6" :key="item">
-                    <h3 text="2xl" justify="center">{{ item }}</h3>
+            <el-carousel v-if="loopList.length" :interval="4000" type="card" height="200px">
+                <el-carousel-item v-for="item in loopList" :key="item.id">
+
+                    <div class="lunbo">
+                        <img :src="`http://localhost:3000${item.cover}`" alt="">
+                        <h3>{{ item.title }}</h3>
+                    </div>
+                    
+
                 </el-carousel-item>
             </el-carousel>
         </el-card>
@@ -34,11 +40,23 @@
 </template>
 <script setup>
 import { useStore } from 'vuex'
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { getProductsList } from '@/api/products'
 const store = useStore()
 const avatarUrl = computed(() => {
     return store.state.userInfo.avatar ? 'http://localhost:3000' + store.state.userInfo.avatar : 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
 })
+const loopList = ref([])
+onMounted(() => {
+    getTableData()
+})
+const getTableData = async () => {
+    const result = await getProductsList()
+    if (result.data.code === 1) {
+        loopList.value = result.data.data
+        console.log(loopList.value);
+    }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -46,8 +64,25 @@ const avatarUrl = computed(() => {
     margin-top: 50px;
 }
 
+.lunbo {
+    width: 800px;
+    height: 200px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    h3{
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+    }
+}
+
 .el-carousel__item h3 {
-    color: #475669;
+    color: #fff;
     opacity: 0.75;
     line-height: 200px;
     margin: 0;
