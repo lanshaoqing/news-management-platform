@@ -13,7 +13,7 @@
             </el-form-item>
 
             <el-form-item label="内容" prop="content">
-                <editor @event="handleChange"/>
+                <editor @event="handleChange" />
             </el-form-item>
 
             <el-form-item label="类别" prop="category">
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import Upload from '@/components/upload/Upload'
 import editor from '@/components/editor/Editor'
 import { upload } from '@/api/upload'
@@ -51,13 +51,29 @@ const newsForm = reactive({
     cover: '',
     file: null,
     isPublish: 0,//0未发布，1已发布
+    ifsure: false
 })
+// onMounted(() => {
+//     newsForm.ifsure = data.ifsure
+// })
+
+const contentValidate = (rule, value, callback) => {
+    if (newsForm.ifsure) {
+        callback();
+    } else {
+        callback(new Error('请输入内容'));
+    }
+}
+
 const newsFormRules = {
     title: [
         { required: true, message: '请输入标题', trigger: 'blur' }
     ],
     content: [
-        { required: true, message: '请输入内容', trigger: 'blur' }
+        {
+            required: true,
+            validator: contentValidate, message: '请输入内容', trigger: 'blur'
+        }
     ],
     category: [
         { required: true, message: '请选择分类', trigger: 'blur' }
@@ -67,8 +83,10 @@ const newsFormRules = {
     ]
 }
 const options = [{ value: 1, label: '最新动态' }, { value: 2, label: '典型案例' }, { value: 3, label: '通知公告' }]
+
 const handleChange = (data) => {
-    newsForm.content = data
+    newsForm.ifsure = data.ifsure
+    newsForm.content = data.valueHtml
 }
 const handleUploadChange = (file) => {
     newsForm.cover = URL.createObjectURL(file)
@@ -82,6 +100,7 @@ const submitForm = () => {
         }
     })
 }
+
 </script>
 
 <style lang="scss" scoped>

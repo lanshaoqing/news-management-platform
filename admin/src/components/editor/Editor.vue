@@ -2,14 +2,14 @@
     <div style="border: 1px solid #ccc">
         <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode" />
         <Editor style="height: 500px; overflow-y: hidden;" v-model="valueHtml" :defaultConfig="editorConfig" :mode="mode"
-            @onCreated="handleCreated" />
+            @onCreated="handleCreated" @onChange="haneleChange" />
     </div>
 </template>
 
 
 <script setup>
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
-import { onBeforeUnmount, ref, shallowRef, defineEmits, watch, nextTick } from 'vue'
+import { onBeforeUnmount, ref, shallowRef, defineEmits } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 const emit = defineEmits(['event'])
 // 编辑器实例，必须用 shallowRef
@@ -31,8 +31,11 @@ const handleCreated = (editor) => {
     editorRef.value = editor // 记录 editor 实例，重要！
 }
 
-watch(valueHtml, (value) => {
-    emit('event', value)
-})
-
+const haneleChange = (editor) => {
+    let ifsure = handleHtml(editor)
+    emit('event', { valueHtml: valueHtml.value, ifsure })
+}
+const handleHtml = (content) => {
+    return content.children.some(item => item.children.some(item => item.text !== ''))
+}
 </script>

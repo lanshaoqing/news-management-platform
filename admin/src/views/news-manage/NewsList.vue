@@ -32,7 +32,7 @@
                 <el-table-column label="操作">
                     <template #default="scope">
 
-                        <el-button circle :icon="Star" type="success"></el-button>
+                        <el-button circle :icon="Star" type="success" @click="handlePreview(scope.row)"></el-button>
                         <el-button circle :icon="Edit"></el-button>
                         <el-button circle :icon="Delete" type="danger"></el-button>
 
@@ -40,9 +40,23 @@
                     </template>
                 </el-table-column>
 
-
             </el-table>
         </el-card>
+
+        <!-- 弹出框 -->
+        <el-dialog v-model="dialogVisible" title="预览新闻" width="50%">
+            <div>
+                <h2>{{ previewData.title }}</h2>
+                <div style="font-size: 12px; color: gray;"> {{ formatTime.getTime(previewData.editTime) }}</div>
+
+                <el-divider>
+                    <el-icon><star-filled /></el-icon>
+                </el-divider>
+
+                <div v-html="previewData.content" class="previewContent"></div>
+            </div>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -51,9 +65,10 @@ import { ref, onMounted } from 'vue'
 import { getNewsList, updatePublish } from '@/api/news'
 import formatTime from '@/util/formatTime'
 import { ElMessage } from 'element-plus';
-import { Star, Edit, Delete } from '@element-plus/icons-vue'
+import { Star, Edit, Delete, StarFilled } from '@element-plus/icons-vue'
 const tableData = ref([])
-
+const previewData = ref({})
+const dialogVisible = ref(false)
 onMounted(() => {
     getTableData()
 })
@@ -74,10 +89,20 @@ const handleSwitchChange = async (item) => {
     await updatePublish(item)
     await getTableData()
 }
+const handlePreview = (data) => {
+    previewData.value = data
+    dialogVisible.value = true
+}
 </script>
 
 <style lang="scss" scoped>
 .el-table {
     margin-top: 30px;
+}
+
+.previewContent {
+    img {
+        max-width: 100%;
+    }
 }
 </style>
