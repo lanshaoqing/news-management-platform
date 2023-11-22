@@ -101,7 +101,7 @@ onMounted(async () => {
     userForm.username =  username
     userForm.gender =  gender
     userForm.introduction =  introduction
-    ElMessage.success('获取成功')
+    ElMessage.success(result.data.message)
 })
 const handleChange = (file) => {
     userForm.avatar = URL.createObjectURL(file)
@@ -113,7 +113,7 @@ const submitForm = () => {
             const result = await upload('adminapi/user/upload', userForm)
             if (result.data.code === 1) {
                 store.commit('changeUserInfo', result.data.data)
-                ElMessage.success('修改成功')
+                ElMessage.success(result.data.message)
             }
         }
     })

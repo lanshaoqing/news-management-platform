@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 // 验证token
 const JWT = require('./util/jwt')
 app.use((req, res, next) => {
-  if (req.url === '/adminapi/user/login') {
+  if (req.url === '/adminapi/users/login') {
     next()
     return
   }
@@ -58,6 +58,9 @@ app.use(usersRouter)
 
 const newsRouter = require('./router/admin/news')
 app.use(newsRouter)
+
+const productsRouter = require('./router/admin/products')
+app.use(productsRouter)
 
 
 // catch 404 and forward to error handler

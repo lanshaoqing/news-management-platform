@@ -79,8 +79,12 @@ const handleUploadChange = (file) => {
 const submitForm = () => {
     newsFormRef.value.validate(async (valid) => {
         if (valid) {
-            await upload('adminapi/news/add', newsForm)
-            ElMessage.success('创建成功')
+            const result = await upload('adminapi/news/add', newsForm)
+            if (result.data.code === 1) {
+                ElMessage.success(result.data.message)
+                router.push('/news-manage/newslist')
+            }
+
         }
     })
 }

@@ -83,7 +83,7 @@ const getTableData = async () => {
     const result = await getNewsList()
     if (result.data.code === 1) {
         tableData.value = result.data.data
-        ElMessage.success('获取成功')
+        ElMessage.success(result.data.message)
     }
 }
 // 分类信息
@@ -93,8 +93,11 @@ const categoryForm = (category) => {
 }
 
 const handleSwitchChange = async (item) => {
-    await updatePublish(item)
-    await getTableData()
+    const result = await updatePublish(item)
+    if(result.data.code === 1){
+        ElMessage.success(result.data.message)
+        await getTableData()
+    }
 }
 const handlePreview = (data) => {
     previewData.value = data
@@ -108,8 +111,8 @@ const handleDelete = async (item) => {
     const result = await deleteNews(item)
     if (result.data.code === 1) {
         ElMessage.success('删除成功')
+        await getTableData()
     }
-    await getTableData()
 }
 
 </script>

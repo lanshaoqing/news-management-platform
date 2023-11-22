@@ -43,7 +43,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import Upload from '@/components/upload/Upload'
-import { upload } from '@/api/users'
+import { upload } from '@/api/upload'
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 const userFormRef = ref()
@@ -86,10 +86,10 @@ const router = useRouter()
 const submitForm = () => {
     userFormRef.value.validate(async (valid) => {
         if (valid) {
-            const result = await upload('/adminapi/user/add', userForm)
+            const result = await upload('/adminapi/users/add', userForm)
             if (result.data.code === 1) {
-                // store.commit('changeUserInfo', result.data.data)
-                ElMessage.success('添加成功')
+                ElMessage.success(result.data.message)
+                router.push('/user-manage/userlist')
             }
         }
     })

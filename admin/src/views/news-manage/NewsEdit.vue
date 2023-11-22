@@ -75,8 +75,10 @@ const options = [{ value: 1, label: '最新动态' }, { value: 2, label: '典型
 onMounted(async () => {
     const id = route.params.id
     const result = await getNewsInfo(id)
+    ElMessage.success(result.data.message)
     Object.assign(newsForm, result.data.data[0])
     showEditor.value = true
+    
 })
 const handleChange = (data) => {
     newsForm.content = data
@@ -88,9 +90,9 @@ const handleUploadChange = (file) => {
 const submitForm = () => {
     newsFormRef.value.validate(async (valid) => {
         if (valid) {
-            await upload('adminapi/news/list', newsForm)
+            const result = await upload('adminapi/news/list', newsForm)
+            ElMessage.success(result.data.message)
             router.back()
-            ElMessage.success('编辑成功')
         }
     })
 }

@@ -4,18 +4,18 @@ const upload = multer({ dest: 'public/avataruploads/' })
 const router = express.Router()
 const router_handler = require('../../router_handler/admin/users')
 
-router.post('/adminapi/user/login', router_handler.login)
+router.post('/adminapi/users/login', router_handler.login)
 
-router.post('/adminapi/user/upload', upload.single('file'), router_handler.upload)
+router.post('/adminapi/users/upload', upload.single('file'), router_handler.upload)
 
-router.post('/adminapi/user/add', upload.single('file'), router_handler.add)
+router.post('/adminapi/users/add', upload.single('file'), router_handler.add)
 
-router.get('/adminapi/user/list', router_handler.getList)
+router.get('/adminapi/users/list', router_handler.getList)
 
-router.delete('/adminapi/user/list/:id', router_handler.delList)
+router.delete('/adminapi/users/list/:id', router_handler.delList)
 
-router.put('/adminapi/user/list/:id', router_handler.editUser)
+router.put('/adminapi/users/list/:id', router_handler.editUser)
 
-router.get('/adminapi/user/info/:id', router_handler.getUserInfo)
+router.get('/adminapi/users/info/:id', router_handler.getUserInfo)
 
 module.exports = router

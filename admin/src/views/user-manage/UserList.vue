@@ -117,7 +117,7 @@ const getTableData = async () => {
     const result = await getUserList()
     if (result.data.code === 1) {
         tableData.value = result.data.data
-        ElMessage.success('获取成功')
+        ElMessage.success(result.data.message)
     }
 }
 
@@ -133,7 +133,7 @@ const handleEdit = (data) => {
 const handleDelete = async (data) => {
     const result = await deleteUser(data.id)
     if (result.data.code === 1) {
-        ElMessage.success('删除成功')
+        ElMessage.success(result.data.message)
         getTableData()
     }
 }
@@ -143,7 +143,7 @@ const handleEditConfirm = () => {
             // console.log(userForm);
             const result = await editUser(userForm)
             if (result.data.code === 1) {
-                ElMessage.success('编辑成功')
+                ElMessage.success(result.data.message)
                 dialogVisible.value = false
                 getTableData()
             }
