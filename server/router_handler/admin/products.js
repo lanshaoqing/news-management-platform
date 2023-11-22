@@ -14,3 +14,30 @@ exports.add = (req, res) => {
         })
     })
 }
+
+// 获取产品列表信息
+exports.list = (req, res) => {
+    const sqlStr = 'select * from products order by editTime desc'
+    db.query(sqlStr, (err, results) => {
+        if (err) return res.cc(err)
+        res.send({
+            code: 1,
+            message: '获取产品列表成功',
+            data: results
+        })
+    })
+}
+
+// 删除产品
+exports.delete = (req, res) => {
+    const sqlStr = 'delete from products where id=?'
+    const id = req.params.id
+    db.query(sqlStr, id, (err, results) => {
+        if (err) return res.cc(err)
+        if (results.affectedRows !== 1) return res.cc('删除失败')
+        res.send({
+            code: 1,
+            message: '删除成功'
+        })
+    })
+}

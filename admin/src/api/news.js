@@ -19,6 +19,6 @@ export const deleteNews = (data) => {
 }
 
 // 获取新闻信息
-export const getNewsInfo = (id) => {
-    return axios.get(`/adminapi/news/list/${id}`)
+export const getNewsInfo = (data) => {
+    return axios.get(`/adminapi/news/list/${data.id}`)
 }

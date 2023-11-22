@@ -73,8 +73,8 @@ const newsFormRules = {
 const options = [{ value: 1, label: '最新动态' }, { value: 2, label: '典型案例' }, { value: 3, label: '通知公告' }]
 
 onMounted(async () => {
-    const id = route.params.id
-    const result = await getNewsInfo(id)
+    const params = route.params
+    const result = await getNewsInfo(params)
     ElMessage.success(result.data.message)
     Object.assign(newsForm, result.data.data[0])
     showEditor.value = true
