@@ -10,4 +10,5 @@ router.get('/adminapi/news/list',router_handler.list)
 
 router.put('/adminapi/news/publish',router_handler.publish)
 
+router.delete('/adminapi/news/list/:id',router_handler.delete)
 module.exports = router

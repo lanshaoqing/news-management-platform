@@ -34,8 +34,13 @@
 
                         <el-button circle :icon="Star" type="success" @click="handlePreview(scope.row)"></el-button>
                         <el-button circle :icon="Edit"></el-button>
-                        <el-button circle :icon="Delete" type="danger"></el-button>
 
+                        <el-popconfirm title="你确定要删除吗？" confirm-button-text="确定" cancel-button-text="取消"
+                            @confirm="handleDelete(scope.row)">
+                            <template #reference>
+                                <el-button circle :icon="Delete" type="danger"></el-button>
+                            </template>
+                        </el-popconfirm>
 
                     </template>
                 </el-table-column>
@@ -53,7 +58,7 @@
                     <el-icon><star-filled /></el-icon>
                 </el-divider>
 
-                <div v-html="previewData.content" class="previewContent"></div>
+                <div v-html="previewData.content" class="htmlContent"></div>
             </div>
         </el-dialog>
 
@@ -62,7 +67,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getNewsList, updatePublish } from '@/api/news'
+import { getNewsList, updatePublish, deleteNews } from '@/api/news'
 import formatTime from '@/util/formatTime'
 import { ElMessage } from 'element-plus';
 import { Star, Edit, Delete, StarFilled } from '@element-plus/icons-vue'
@@ -93,6 +98,14 @@ const handlePreview = (data) => {
     previewData.value = data
     dialogVisible.value = true
 }
+const handleDelete = async (item) => {
+    const result = await deleteNews(item)
+    if (result.data.code === 1) {
+        ElMessage.success('删除成功')
+    }
+    await getTableData()
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -100,7 +113,7 @@ const handlePreview = (data) => {
     margin-top: 30px;
 }
 
-.previewContent {
+::v-deep .htmlContent {
     img {
         max-width: 100%;
     }

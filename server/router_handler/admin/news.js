@@ -40,3 +40,17 @@ exports.publish = (req, res) => {
         })
     })
 }
+
+// 删除新闻
+exports.delete = (req, res) => {
+    const sqlStr = 'delete from news where id=?'
+    const id = req.params.id
+    db.query(sqlStr, id, (err, results) => {
+        if (err) return res.cc(err)
+        if (results.affectedRows !== 1) return res.cc('删除失败')
+        res.send({
+            code: 1,
+            message: '删除成功'
+        })
+    })
+}

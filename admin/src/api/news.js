@@ -12,3 +12,6 @@ export const updatePublish = (data) => {
         isPublish:data.isPublish
     })
 }
+export const deleteNews = (data)=>{
+    return axios.delete(`/adminapi/news/list/${data.id}`)
+}
