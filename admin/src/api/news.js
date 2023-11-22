@@ -7,11 +7,18 @@ export const getNewsList = () => {
 
 // 更新发布状态
 export const updatePublish = (data) => {
-    return axios.put('/adminapi/news/publish',{
-        id:data.id,
-        isPublish:data.isPublish
+    return axios.put('/adminapi/news/publish', {
+        id: data.id,
+        isPublish: data.isPublish
     })
 }
-export const deleteNews = (data)=>{
+
+// 删除新闻
+export const deleteNews = (data) => {
     return axios.delete(`/adminapi/news/list/${data.id}`)
+}
+
+// 获取新闻信息
+export const getNewsInfo = (id) => {
+    return axios.get(`/adminapi/news/list/${id}`)
 }

@@ -1,8 +1,8 @@
 <template>
     <div>
-        <el-page-header title="新闻管理" icon="null">
+        <el-page-header title="新闻管理" @back="handleBack()">
             <template #content>
-                <span class="text-large font-600 mr-3"> 创建新闻 </span>
+                <span class="text-large font-600 mr-3"> 编辑新闻 </span>
             </template>
         </el-page-header>
 
@@ -13,7 +13,7 @@
             </el-form-item>
 
             <el-form-item label="内容" prop="content">
-                <editor @event="handleChange" />
+                <editor @event="handleChange" :content="newsForm.content" v-if="showEditor" />
             </el-form-item>
 
             <el-form-item label="类别" prop="category">
@@ -27,7 +27,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="submitForm()">添加新闻</el-button>
+                <el-button type="primary" @click="submitForm()">确定</el-button>
             </el-form-item>
 
         </el-form>
@@ -36,13 +36,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import Upload from '@/components/upload/Upload'
 import editor from '@/components/editor/Editor'
 import { upload } from '@/api/upload'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { getNewsInfo } from '@/api/news'
 const router = useRouter()
+const route = useRoute()
 const newsFormRef = ref()
 const newsForm = reactive({
     title: '',
@@ -52,6 +54,7 @@ const newsForm = reactive({
     file: null,
     isPublish: 0,//0未发布，1已发布
 })
+const showEditor = ref(false)
 
 const newsFormRules = {
     title: [
@@ -69,6 +72,12 @@ const newsFormRules = {
 }
 const options = [{ value: 1, label: '最新动态' }, { value: 2, label: '典型案例' }, { value: 3, label: '通知公告' }]
 
+onMounted(async () => {
+    const id = route.params.id
+    const result = await getNewsInfo(id)
+    Object.assign(newsForm, result.data.data[0])
+    showEditor.value = true
+})
 const handleChange = (data) => {
     newsForm.content = data
 }
@@ -79,12 +88,15 @@ const handleUploadChange = (file) => {
 const submitForm = () => {
     newsFormRef.value.validate(async (valid) => {
         if (valid) {
-            await upload('adminapi/news/add', newsForm)
-            ElMessage.success('创建成功')
+            await upload('adminapi/news/list', newsForm)
+            router.back()
+            ElMessage.success('编辑成功')
         }
     })
 }
-
+const handleBack = () => {
+    router.back()
+}
 </script>
 
 <style lang="scss" scoped>

@@ -54,3 +54,51 @@ exports.delete = (req, res) => {
         })
     })
 }
+
+// 获取新闻信息
+exports.info = (req, res) => {
+    const id = req.params.id
+    const sqlStr = 'select * from news where id=?'
+    db.query(sqlStr, id, (err, results) => {
+        if (err) return res.cc(err)
+        if (results.length !== 1) return res.cc('获取新闻信息失败')
+        res.send({
+            code: 1,
+            message: '获取新闻信息成功',
+            data: results
+        })
+    })
+}
+
+// 更新新闻信息
+exports.update = (req, res) => {
+    const cover = req.file ? `/newsuploads/${req.file.filename}` : ''
+    const { title, content, category, isPublish, id } = req.body
+
+    // 数据库查询语句
+    let sqlStr
+    // 查询数组
+    let uploadArr
+    if (cover) {
+        sqlStr = 'update news set title=?,content=?,category=?,cover=?,isPublish=?,editTime=? where id=?';
+        uploadArr = [title, content, category, cover, isPublish, new Date(), id]
+    } else {
+        sqlStr = 'update news set title=?,content=?,category=?,isPublish=?,editTime=? where id=?';
+        uploadArr = [title, content, category, isPublish, new Date(), id]
+    }
+    db.query(sqlStr, uploadArr, (err, results) => {
+        if (err) res.cc(err)
+        if (results.affectedRows !== 1) res.cc('更新失败')
+        if (cover) {
+            res.send({
+                code: 1,
+                message: '更新成功'
+            })
+        } else {
+            res.send({
+                code: 1,
+                message: '更新成功'
+            })
+        }
+    })
+}

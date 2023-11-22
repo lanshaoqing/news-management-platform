@@ -1,41 +1,25 @@
 <template>
-    <div style="border: 1px solid #ccc">
-        <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode" />
-        <Editor style="height: 500px; overflow-y: hidden;" v-model="valueHtml" :defaultConfig="editorConfig" :mode="mode"
-            @onCreated="handleCreated" @onChange="haneleChange" />
+    <div id="div1">
     </div>
 </template>
 
-
 <script setup>
-import '@wangeditor/editor/dist/css/style.css' // 引入 css
-import { onBeforeUnmount, ref, shallowRef, defineEmits } from 'vue'
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import { onMounted, defineEmits, defineProps } from 'vue';
+import E from 'wangeditor'
 const emit = defineEmits(['event'])
-// 编辑器实例，必须用 shallowRef
-const editorRef = shallowRef()
-// 内容 HTML
-const valueHtml = ref()
-const mode = 'default'
-const toolbarConfig = {}
-const editorConfig = { placeholder: '请输入内容...' }
+const props = defineProps({
+    content: {
+        String
+    }
+})
+onMounted(() => {
+    const editor = new E('#div1')
+    editor.create()
+    props.content && editor.txt.html(props.content)
 
-// 组件销毁时，也及时销毁编辑器
-onBeforeUnmount(() => {
-    const editor = editorRef.value
-    if (editor == null) return
-    editor.destroy()
+    editor.config.onchange = function (newHtml) {
+        emit('event', newHtml)
+    };
 })
 
-const handleCreated = (editor) => {
-    editorRef.value = editor // 记录 editor 实例，重要！
-}
-
-const haneleChange = (editor) => {
-    let ifsure = handleHtml(editor)
-    emit('event', { valueHtml: valueHtml.value, ifsure })
-}
-const handleHtml = (content) => {
-    return content.children.some(item => item.children.some(item => item.text !== ''))
-}
 </script>

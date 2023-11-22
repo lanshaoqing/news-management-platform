@@ -33,7 +33,7 @@
                     <template #default="scope">
 
                         <el-button circle :icon="Star" type="success" @click="handlePreview(scope.row)"></el-button>
-                        <el-button circle :icon="Edit"></el-button>
+                        <el-button circle :icon="Edit" @click="handleEdit(scope.row)"></el-button>
 
                         <el-popconfirm title="你确定要删除吗？" confirm-button-text="确定" cancel-button-text="取消"
                             @confirm="handleDelete(scope.row)">
@@ -71,6 +71,8 @@ import { getNewsList, updatePublish, deleteNews } from '@/api/news'
 import formatTime from '@/util/formatTime'
 import { ElMessage } from 'element-plus';
 import { Star, Edit, Delete, StarFilled } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const tableData = ref([])
 const previewData = ref({})
 const dialogVisible = ref(false)
@@ -98,6 +100,10 @@ const handlePreview = (data) => {
     previewData.value = data
     dialogVisible.value = true
 }
+const handleEdit = (data) => {
+    router.push(`/news-manage/editnews/${data.id}`)
+}
+
 const handleDelete = async (item) => {
     const result = await deleteNews(item)
     if (result.data.code === 1) {
