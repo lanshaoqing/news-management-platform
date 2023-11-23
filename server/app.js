@@ -34,6 +34,10 @@ app.use((req, res, next) => {
 const newsRouter2 = require('./router/web/news')
 app.use(newsRouter2)
 
+// web产品
+const productsRouter2 = require('./router/web/products')
+app.use(productsRouter2)
+
 // 验证token
 const JWT = require('./util/jwt')
 app.use((req, res, next) => {
