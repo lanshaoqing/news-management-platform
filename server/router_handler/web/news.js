@@ -2,7 +2,6 @@ const db = require('../../db/index')
 
 // 获取已发布的新闻列表信息
 exports.list = (req, res) => {
-    // const sqlStr = 'select * from news order by editTime desc where isPublish=?'
     const sqlStr = 'select * from news where isPublish=? order by editTime desc'
     const isPublish = 1//代表已经发布的
     db.query(sqlStr, isPublish, (err, results) => {
@@ -26,6 +25,22 @@ exports.info = (req, res) => {
         res.send({
             code: 1,
             message: '获取新闻成功',
+            data: results
+        })
+    })
+}
+
+// 获取前四的新闻信息
+exports.toplist = (req, res) => {
+    const limit = Number(req.query.limit)
+    const isPublish = 1
+    const sqlStr = 'select * from news where isPublish=? order by editTime desc limit ?'
+    db.query(sqlStr, [isPublish, limit], (err, results) => {
+        if (err) return res.cc(err)
+        if (results.length > 4) return res.cc('获取前四新闻失败')
+        res.send({
+            code: 1,
+            message: '获取新闻列表成功',
             data: results
         })
     })
