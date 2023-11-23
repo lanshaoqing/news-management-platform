@@ -29,6 +29,11 @@ app.use((req, res, next) => {
   next()
 })
 
+// webapi路由,不进行token校验，配置在token校验前面
+// web新闻
+const newsRouter2 = require('./router/web/news')
+app.use(newsRouter2)
+
 // 验证token
 const JWT = require('./util/jwt')
 app.use((req, res, next) => {
@@ -51,16 +56,22 @@ app.use((req, res, next) => {
   // next()
 })
 
-// 路由封装
-// adminapi和webapi两种路由
+// adminapi路由,进行token检验,配置在token校验后面
+// admin用户
 const usersRouter = require('./router/admin/users')
 app.use(usersRouter)
 
+// admin新闻
 const newsRouter = require('./router/admin/news')
 app.use(newsRouter)
 
+// admin产品
 const productsRouter = require('./router/admin/products')
 app.use(productsRouter)
+
+
+
+
 
 
 // catch 404 and forward to error handler
